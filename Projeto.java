@@ -31,6 +31,7 @@ public class Projeto
 				}
 				System.out.println(linha);
 			}
+			System.out.println("");
 			lerArquivo.close();
 
 			if(atual == null)
@@ -60,7 +61,7 @@ public class Projeto
 					if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// desce
 				    	fila.guarde(new Coordenada(atual.getX(), atual.getY() - 1));
 
-				/*if(fila.isVazia())
+				if(fila.isVazia())
 				{
 					while(!possibilidades.isVazia())
 					{
@@ -81,12 +82,11 @@ public class Projeto
 					}
 				}
 				else
-				{*/
+				{
 
 					atual = fila.getUmItem();
-						System.out.println(fila);
 					fila.jogueForaUmItem();
-				//}
+				}
 
 				caminho.guarde(atual);
 				possibilidades.guarde(fila);

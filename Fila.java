@@ -46,7 +46,7 @@ public class Fila<X> implements Cloneable
 
 			if(s instanceof Cloneable)
 			{
-				if(fim == this.vetor.length-1)
+				if(fim == this.vetor.length)
 				{
 				   fim = 0;
 				   this.vetor[this.fim] = meuCloneDeX(s);
