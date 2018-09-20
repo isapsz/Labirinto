@@ -11,7 +11,7 @@ public class Projeto
 			BufferedReader lerArquivo = new BufferedReader(new FileReader(arquivo));
 			int linhas = Integer.parseInt(lerArquivo.readLine());
 			int colunas = Integer.parseInt(lerArquivo.readLine());
-			char[][] matriz = new char[colunas][linhas];
+			char[][] labirinto = new char[colunas][linhas];
 
 			boolean achouSaida = false;
 
@@ -24,13 +24,14 @@ public class Projeto
 
                 for(int x = 0; x < colunas; x++)
 				{
-					matriz[x][y] = caracteres[x].charAt(0);
+					labirinto[x][y] = caracteres[x].charAt(0);
 
 					if(caracteres[x].equals("E"))
 						atual = new Coordenada(x,y);
 				}
 				System.out.println(linha);
 			}
+			lerArquivo.close();
 
 			if(atual == null)
 				throw new Exception("Caracter de entrada não encontrado!");
@@ -39,41 +40,69 @@ public class Projeto
              Fila<Coordenada> fila = new Fila<Coordenada>(3);
 			 Pilha<Coordenada> caminho = new Pilha<Coordenada>(linhas*colunas);
 			 Pilha<Fila<Coordenada>>  possibilidades = new Pilha<Fila<Coordenada>>(linhas*colunas);
+			 Coordenada adjacente = null;
+
 			while(!achouSaida)
 			{
-				if(matriz[atual.getX() + 1][atual.getY()] == 'S' || matriz[atual.getX() + 1][atual.getY()] == ' ')	//direita
+				if(labirinto[atual.getX() + 1][atual.getY()] == 'S' || labirinto[atual.getX() + 1][atual.getY()] == ' ')	//direita
 					fila.guarde(new Coordenada(atual.getX() + 1, atual.getY()));
 
-				//if(matriz[atual.getX() - 1][atual.getY()] == ' ' || matriz[atual.getX() - 1][atual.getY()] == 'S')	//esquerda
-					//fila.guarde(new Coordenada(atual.getX() - 1,atual.getY()));
+
+				if(labirinto[atual.getX() - 1][atual.getY()] == ' ' || labirinto[atual.getX() - 1][atual.getY()] == 'S')	//esquerda
+					fila.guarde(new Coordenada(atual.getX() - 1,atual.getY()));
 
 
-				if(matriz[atual.getX()][atual.getY() + 1] == ' ' || matriz[atual.getX()][atual.getY() + 1] == 'S')	//sobe
+				if(labirinto[atual.getX()][atual.getY() + 1] == ' ' || labirinto[atual.getX()][atual.getY() + 1] == 'S')	//sobe
 					fila.guarde(new Coordenada(atual.getX(), atual.getY()+1));
 
 
-				if(matriz[atual.getX()][atual.getY() - 1] == ' ' || matriz[atual.getX()][atual.getY() - 1] == 'S')	// desce
+				if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// desce
 				    fila.guarde(new Coordenada(atual.getX(), atual.getY() - 1));
 
-				//atual = fila.getUmItem();
-				//fila.jogueForaUmItem();
+				if(fila.isVazia())
+				{
+					while(!possibilidades.isVazia())
+					{
+						fila = possibilidades.getUmItem();
+						possibilidades.jogueForaUmItem();
+						if(fila.isVazia())
+						{
+							atual = caminho.getUmItem();
+							caminho.jogueForaUmItem();
+							labirinto[atual.getX()][atual.getY()] = ' ';
+
+						}
+						else
+						{
+							atual = fila.getUmItem();
+							fila.jogueForaUmItem();
+							break;
+						}
+					}
+				}
+				else
+				{
+					atual = fila.getUmItem();
+					fila.jogueForaUmItem();
+				}
 
 
-				if(matriz[atual.getX()][atual.getY()] == 'S')
+
+				if(labirinto[atual.getX()][atual.getY()] == 'S')
 					achouSaida = true;
 				else
-					matriz[atual.getX()][atual.getY()] = '*';
+					labirinto[atual.getX()][atual.getY()] = '*';
 
 
-				//caminho.guarde(atual);
-				//possibilidades.guarde(fila);
+				caminho.guarde(atual);
+				possibilidades.guarde(fila);
 			}
 
 			for(int y = 0; y < linhas; y++)
 			{
 				for(int x = 0; x < colunas; x++)
 				{
-					System.out.print(matriz[x][y]);
+					System.out.print(labirinto[x][y]);
 				}
 				System.out.print("\n");
 			}
