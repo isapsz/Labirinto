@@ -40,26 +40,27 @@ public class Projeto
              Fila<Coordenada> fila = new Fila<Coordenada>(3);
 			 Pilha<Coordenada> caminho = new Pilha<Coordenada>(linhas*colunas);
 			 Pilha<Fila<Coordenada>>  possibilidades = new Pilha<Fila<Coordenada>>(linhas*colunas);
-			 Coordenada adjacente = null;
 
 			while(!achouSaida)
 			{
-				if(labirinto[atual.getX() + 1][atual.getY()] == 'S' || labirinto[atual.getX() + 1][atual.getY()] == ' ')	//direita
-					fila.guarde(new Coordenada(atual.getX() + 1, atual.getY()));
+				if(atual.getX() < colunas)
+					if(labirinto[atual.getX() + 1][atual.getY()] == 'S' || labirinto[atual.getX() + 1][atual.getY()] == ' ')	//direita
+						fila.guarde(new Coordenada(atual.getX() + 1, atual.getY()));
 
 
-				if(labirinto[atual.getX() - 1][atual.getY()] == ' ' || labirinto[atual.getX() - 1][atual.getY()] == 'S')	//esquerda
-					fila.guarde(new Coordenada(atual.getX() - 1,atual.getY()));
+				if(atual.getX() > 0)
+					if(labirinto[atual.getX() - 1][atual.getY()] == ' ' || labirinto[atual.getX() - 1][atual.getY()] == 'S')	//esquerda
+						fila.guarde(new Coordenada(atual.getX() - 1,atual.getY()));
 
+				if(atual.getY() > 0)
+					if(labirinto[atual.getX()][atual.getY() + 1] == ' ' || labirinto[atual.getX()][atual.getY() + 1] == 'S')	//sobe
+						fila.guarde(new Coordenada(atual.getX(), atual.getY()+1));
 
-				if(labirinto[atual.getX()][atual.getY() + 1] == ' ' || labirinto[atual.getX()][atual.getY() + 1] == 'S')	//sobe
-					fila.guarde(new Coordenada(atual.getX(), atual.getY()+1));
+				if(atual.getY() < linhas)
+					if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// desce
+				    	fila.guarde(new Coordenada(atual.getX(), atual.getY() - 1));
 
-
-				if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// desce
-				    fila.guarde(new Coordenada(atual.getX(), atual.getY() - 1));
-
-				if(fila.isVazia())
+				/*if(fila.isVazia())
 				{
 					while(!possibilidades.isVazia())
 					{
@@ -70,7 +71,6 @@ public class Projeto
 							atual = caminho.getUmItem();
 							caminho.jogueForaUmItem();
 							labirinto[atual.getX()][atual.getY()] = ' ';
-
 						}
 						else
 						{
@@ -81,21 +81,20 @@ public class Projeto
 					}
 				}
 				else
-				{
+				{*/
+
 					atual = fila.getUmItem();
+						System.out.println(fila);
 					fila.jogueForaUmItem();
-				}
-
-
-
-				if(labirinto[atual.getX()][atual.getY()] == 'S')
-					achouSaida = true;
-				else
-					labirinto[atual.getX()][atual.getY()] = '*';
-
+				//}
 
 				caminho.guarde(atual);
 				possibilidades.guarde(fila);
+
+					if(labirinto[atual.getX()][atual.getY()] == 'S')
+									achouSaida = true;
+								else
+					labirinto[atual.getX()][atual.getY()] = '*';
 			}
 
 			for(int y = 0; y < linhas; y++)
@@ -110,7 +109,7 @@ public class Projeto
 		}
 		catch(Exception erro)
 		{
-			System.err.println(erro.getMessage());
+			System.err.println(erro);
 		}
 	}
 }

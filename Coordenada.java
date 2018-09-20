@@ -7,6 +7,7 @@ public class Coordenada implements Cloneable
     {
 		if(x < 0 || y < 0)
 			throw new Exception("Coordenadas inválidas!");
+
 		this.x = x;
 		this.y = y;
 	}

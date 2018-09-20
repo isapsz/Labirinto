@@ -168,7 +168,7 @@ public class Pilha<X> implements Cloneable //a classe recebe uma classe que são 
 			Class<?>[]  tiposDosParametrosFormais = null; // pois o método de clone não tem parametros
 			Method metodo = classe.getMethod("clone", tiposDosParametrosFormais);
 			Object[] parametrosReais = null; // pois o método de clone não tem parametros
-		    ret = (X)metodo.invoke(parametrosReais);
+		    ret = (X)metodo.invoke(x,parametrosReais);
         }
        catch(NoSuchMethodException erro)
        {}
