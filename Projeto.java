@@ -54,11 +54,12 @@ public class Projeto
 						fila.guarde(new Coordenada(atual.getX() - 1,atual.getY()));
 
 				if(atual.getY() > 0)
-					if(labirinto[atual.getX()][atual.getY() + 1] == ' ' || labirinto[atual.getX()][atual.getY() + 1] == 'S')	//sobe
+					if(labirinto[atual.getX()][atual.getY() + 1] == ' ' || labirinto[atual.getX()][atual.getY() + 1] == 'S')	//desce
 						fila.guarde(new Coordenada(atual.getX(), atual.getY()+1));
 
+
 				if(atual.getY() < linhas)
-					if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// desce
+					if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// sobe
 				    	fila.guarde(new Coordenada(atual.getX(), atual.getY() - 1));
 
 				if(fila.isVazia())
@@ -83,17 +84,16 @@ public class Projeto
 				}
 				else
 				{
-
+					possibilidades.guarde(fila);
 					atual = fila.getUmItem();
-					fila.jogueForaUmItem();
+					while(!fila.isVazia())
+						fila.jogueForaUmItem();
 				}
 
 				caminho.guarde(atual);
-				possibilidades.guarde(fila);
-
-					if(labirinto[atual.getX()][atual.getY()] == 'S')
-									achouSaida = true;
-								else
+				if(labirinto[atual.getX()][atual.getY()] == 'S')
+					achouSaida = true;
+				else
 					labirinto[atual.getX()][atual.getY()] = '*';
 			}
 

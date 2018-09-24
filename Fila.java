@@ -38,6 +38,7 @@ public class Fila<X> implements Cloneable
 
 	    public void guarde(X s) throws Exception
 	    {
+			//System.out.println(fim + "f");
 			if(s==null) // s.equals antes não daria certo, pois se ele for null vai dar errado já que não se pode chamar método para objeto null
 			   throw new Exception("Informação ausente");
 
@@ -46,10 +47,10 @@ public class Fila<X> implements Cloneable
 
 			if(s instanceof Cloneable)
 			{
-				if(fim == this.vetor.length)
+				if(fim == this.vetor.length - 1)
 				{
-				   fim = 0;
 				   this.vetor[this.fim] = meuCloneDeX(s);
+				   fim = 0;
 				}
 				//this.vetor[this.qtd] = (Horario)s.clone();
 				else
@@ -59,8 +60,8 @@ public class Fila<X> implements Cloneable
 			{
 				if(fim == this.vetor.length-1)
 				{
-				   fim = 0;
 				   this.vetor[this.fim] = s;
+				   fim = 0;
 				}
 				//this.vetor[this.qtd] = (Horario)s.clone();
 				else
