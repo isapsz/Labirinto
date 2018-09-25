@@ -1,4 +1,9 @@
 import java.io.*;
+import coordenada.*;
+import fila.*;
+import pilha.*;
+import labirinto.*;
+
 public class Projeto
 {
 	public static void main(String[] args) throws Exception
@@ -11,10 +16,8 @@ public class Projeto
 			BufferedReader lerArquivo = new BufferedReader(new FileReader(arquivo));
 			int linhas = Integer.parseInt(lerArquivo.readLine());
 			int colunas = Integer.parseInt(lerArquivo.readLine());
-			char[][] labirinto = new char[colunas][linhas];
-
+			Labirinto lab = new Labirinto(linhas, colunas);
 			boolean achouSaida = false;
-
 			Coordenada atual = null;
 
 			for(int y = 0; y < linhas; y++)
@@ -24,88 +27,72 @@ public class Projeto
 
                 for(int x = 0; x < colunas; x++)
 				{
-					labirinto[x][y] = caracteres[x].charAt(0);
+					lab.setMatriz(caracteres[x].charAt(0),x, y);
 
 					if(caracteres[x].equals("E"))
 						atual = new Coordenada(x,y);
 				}
-				System.out.println(linha);
 			}
-			System.out.println("");
 			lerArquivo.close();
+			System.out.println(lab);
 
 			if(atual == null)
 				throw new Exception("Caracter de entrada não encontrado!");
 
 
-             Fila<Coordenada> fila = new Fila<Coordenada>(3);
+
 			 Pilha<Coordenada> caminho = new Pilha<Coordenada>(linhas*colunas);
 			 Pilha<Fila<Coordenada>>  possibilidades = new Pilha<Fila<Coordenada>>(linhas*colunas);
 
 			while(!achouSaida)
 			{
+				Fila<Coordenada> fila = new Fila<Coordenada>(3);
 				if(atual.getX() < colunas)
-					if(labirinto[atual.getX() + 1][atual.getY()] == 'S' || labirinto[atual.getX() + 1][atual.getY()] == ' ')	//direita
+					if(lab.getMatriz(atual.getX() + 1, atual.getY()) == ' ' || lab.getMatriz(atual.getX() + 1, atual.getY()) == 'S' )	//direita
 						fila.guarde(new Coordenada(atual.getX() + 1, atual.getY()));
 
 
 				if(atual.getX() > 0)
-					if(labirinto[atual.getX() - 1][atual.getY()] == ' ' || labirinto[atual.getX() - 1][atual.getY()] == 'S')	//esquerda
+					if(lab.getMatriz(atual.getX() - 1, atual.getY()) == ' ' || lab.getMatriz(atual.getX() - 1, atual.getY()) == 'S')	//esquerda
 						fila.guarde(new Coordenada(atual.getX() - 1,atual.getY()));
 
 				if(atual.getY() > 0)
-					if(labirinto[atual.getX()][atual.getY() + 1] == ' ' || labirinto[atual.getX()][atual.getY() + 1] == 'S')	//desce
+					if(lab.getMatriz(atual.getX(), atual.getY()+1) == ' ' || lab.getMatriz(atual.getX(), atual.getY()+1)== 'S')	//desce
 						fila.guarde(new Coordenada(atual.getX(), atual.getY()+1));
 
 
 				if(atual.getY() < linhas)
-					if(labirinto[atual.getX()][atual.getY() - 1] == ' ' || labirinto[atual.getX()][atual.getY() - 1] == 'S')	// sobe
+					if(lab.getMatriz(atual.getX(), atual.getY()-1) == ' ' || lab.getMatriz(atual.getX(), atual.getY()-1) == 'S')	// sobe
 				    	fila.guarde(new Coordenada(atual.getX(), atual.getY() - 1));
 
-				if(fila.isVazia())
+				while(fila.isVazia())
 				{
-					while(!possibilidades.isVazia())
+					if(!fila.isVazia())
 					{
-						fila = possibilidades.getUmItem();
-						possibilidades.jogueForaUmItem();
-						if(fila.isVazia())
-						{
-							atual = caminho.getUmItem();
-							caminho.jogueForaUmItem();
-							labirinto[atual.getX()][atual.getY()] = ' ';
-						}
-						else
-						{
-							atual = fila.getUmItem();
-							fila.jogueForaUmItem();
-							break;
-						}
-					}
-				}
-				else
-				{
-					possibilidades.guarde(fila);
-					atual = fila.getUmItem();
-					while(!fila.isVazia())
+						atual = fila.getUmItem();
 						fila.jogueForaUmItem();
+						break;
+					}
+					fila = possibilidades.getUmItem();
+					possibilidades.jogueForaUmItem();
+					atual = caminho.getUmItem();
+					caminho.jogueForaUmItem();
+					lab.setMatriz(' ', atual.getX(), atual.getY());
+				}
+				if(!fila.isVazia())
+				{
+					atual = fila.getUmItem();
+					fila.jogueForaUmItem();
+					possibilidades.guarde(fila);
 				}
 
 				caminho.guarde(atual);
-				if(labirinto[atual.getX()][atual.getY()] == 'S')
+				if(lab.getMatriz(atual.getX(), atual.getY()) == 'S')
 					achouSaida = true;
 				else
-					labirinto[atual.getX()][atual.getY()] = '*';
+				   lab.setMatriz('*', atual.getX(), atual.getY());
 			}
-
-			for(int y = 0; y < linhas; y++)
-			{
-				for(int x = 0; x < colunas; x++)
-				{
-					System.out.print(labirinto[x][y]);
-				}
-				System.out.print("\n");
-			}
-
+			System.out.println(lab);
 		}
 		catch(Exception erro)
 		{

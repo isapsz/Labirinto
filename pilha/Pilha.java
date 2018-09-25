@@ -1,4 +1,5 @@
- import java.lang.reflect.*;
+package pilha;
+import java.lang.reflect.*;
  /*
 ...
 String str = "COTUCA"
@@ -22,8 +23,8 @@ char chr = ((Character)metodo.invoke(parametrosReais)).charValue();
 */
 public class Pilha<X> implements Cloneable //a classe recebe uma classe que são possíveis de serem comparadas "eXtends" <X eXtends Comparable<X>>
 {
-    private Object[] vetor;
-    private int qtd   = 0;
+    protected Object[] vetor;
+    protected int qtd   = 0;
 
     //versão preventiva
 	public Pilha(int t) throws Exception
@@ -158,7 +159,7 @@ public class Pilha<X> implements Cloneable //a classe recebe uma classe que são 
 		{}
 		return ret;
 	}
-	private X meuCloneDeX(X x) throws Exception
+	protected X meuCloneDeX(X x) throws Exception
 	{
 		// return X.clone();
 		X ret = null;

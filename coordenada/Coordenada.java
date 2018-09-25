@@ -1,15 +1,28 @@
+package coordenada;
+
 public class Coordenada implements Cloneable
 {
-    private int x;
-    private int y;
+    protected int x;
+    protected int y;
 
     public Coordenada(int x, int y) throws Exception
     {
-		if(x < 0 || y < 0)
-			throw new Exception("Coordenadas inválidas!");
+		this.validarX(x);
+		this.validarY(y);
 
 		this.x = x;
 		this.y = y;
+	}
+
+    protected void validarX(int x) throws Exception
+    {
+		if(x < 0)
+			throw new Exception("Coordenada x inválida!");
+	}
+	protected void validarY(int y) throws Exception
+	{
+	    if(y < 0)
+		 throw new Exception("Coordenada y inválida!");
 	}
 
 	public int getX()
@@ -24,15 +37,14 @@ public class Coordenada implements Cloneable
 
 	public void setX(int x)	throws Exception
 	{
-		if(x < 0)
-			throw new Exception("Coordenada x inválida!");
+		this.validarX(x);
+
 		this.x = x;
 	}
 
 	public void setY(int y)	throws Exception
 	{
-		if(y < 0)
-			throw new Exception("Coordenada y inválida!");
+		this.validarY(y);
 		this.y = y;
 	}
 

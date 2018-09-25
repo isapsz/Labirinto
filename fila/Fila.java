@@ -1,11 +1,12 @@
+package fila;
 import java.lang.reflect.*;
 
 public class Fila<X> implements Cloneable
 {
-	    private Object[] vetor;  //private String[] vetor --> ainda não tem tamanho
-	    private int qtd = 0;
-	    private int inicio = 0;
-	    private int fim = 0;
+	    protected Object[] vetor;  //protected String[] vetor --> ainda não tem tamanho
+	    protected int qtd = 0;
+	    protected int inicio = 0;
+	    protected int fim = 0;
 
 	    public Fila(int capacidade) throws Exception
 	    {
@@ -15,7 +16,7 @@ public class Fila<X> implements Cloneable
 			this.vetor = new Object[capacidade];
 		}
 
-		private X meuCloneDeX(X x)
+		protected X meuCloneDeX(X x)
 		{
 			X ret = null;
 			try
