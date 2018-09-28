@@ -63,11 +63,16 @@ public class Labirinto implements Cloneable
 	*/
 	public void resolverLab() throws Exception
 	{
+		if(!this.achouEntrada())
+	        throw new Exception("Caracter de entrada não encontrado!");
+
+
 		while(!achouSaida)
 		{
 			this.avancar();
 			this.retroceder();
 			this.empilhar();
+			this.verificaSaida();
 		}
 	}
 
@@ -99,20 +104,21 @@ public class Labirinto implements Cloneable
 		int x = this.atual.getX();
 		int y = this.atual.getY();
 
-		if(x < this.qtdColuna)
-			if(this.verifica(x +1, y, ' ') ||this.verifica(x +1, y, 'S'))	//direita
+		if(x < this.qtdColuna - 1)
+			if(this.verifica(x +1, y, ' ') ||this.verifica(x +1, y, 'S'))
 				fila.guarde(new Coordenada(x + 1, y));
 
 		if(x > 0)
-			if(this.verifica(x - 1, y, ' ') || this.verifica(x -1, y, 'S'))	//esquerda
+			if(this.verifica(x - 1, y, ' ') || this.verifica(x -1, y, 'S'))
 				fila.guarde(new Coordenada(x - 1,y));
 
-		if(y > 0)
-			if(this.verifica(x, y + 1, ' ') ||this.verifica(x, y+1, 'S'))	//desce
+		if(y >= 0)
+			if(this.verifica(x, y + 1, ' ') ||this.verifica(x, y+1, 'S'))
 				fila.guarde(new Coordenada(x, y+1));
 
-		if(y < this.qtdLinha)
-			if(this.verifica(x, y - 1, ' ') || this.verifica(x, y-1, 'S'))	// sobe
+
+		if(y < this.qtdLinha - 1 && y > 0)
+			if(this.verifica(x, y - 1, ' ') || this.verifica(x, y-1, 'S'))
 				fila.guarde(new Coordenada(x, y - 1));
 	}
 
@@ -144,20 +150,25 @@ public class Labirinto implements Cloneable
 	*/
 	protected void empilhar() throws Exception
 	{
-		//if(!fila.isVazia())
-		//{
-			this.atual = fila.getUmItem();
-			this.fila.jogueForaUmItem();
-			this.possibilidades.guarde(fila);
-		//}
-
+		this.atual = fila.getUmItem();
+		this.fila.jogueForaUmItem();
+		this.possibilidades.guarde(fila);
 		this.caminho.guarde(atual);
+
+	}
+
+    /**
+	    Verifica se a posição da matriz contém o caracter de saída do labirinto,
+	    se sim a boolean achouSaida recebe true caso contrário a posição é preenchida com
+	    o caracter *.
+	*/
+    protected void verificaSaida() throws Exception
+    {
 		if(this.getPosicaoMatriz(atual.getX(), atual.getY()) == 'S')
 			achouSaida = true;
 		else
 			this.setPosicaoMatriz('*', atual.getX(), atual.getY());
 	}
-
 	/**
 		Retorna uma string contendo as coordenadas do caminho de resolução
 		do labirinto.

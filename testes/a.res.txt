@@ -1,7 +1,9 @@
+Labirinto original:
 #####
 E   S
 #####
 
+Labirinto resolvido:
 #####
 E***S
 #####
